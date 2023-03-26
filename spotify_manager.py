@@ -44,11 +44,13 @@ class Spotify:
         if self.device_id == None:
             self.set_device()
         # if self.is_playing():
-        #     self.sp.volume(volume, device_id=self.device_id)
+        try:
+            self.sp.volume(volume, device_id=self.device_id)
         # else:
-        #     print("Please play any song to change to volume, If the song start request is send, wait for few seconds and change the volume")
-        time.sleep(0.2)
-        self.sp.volume(volume, device_id=self.device_id)
+        except:
+            time.sleep(0.2)
+            print("Retrying to change the volume, Since the volume cannot be changed unless the song is playing")
+            self.set_volume(volume)
 
     def is_playing(self):
         play_staus = self.sp.currently_playing()
